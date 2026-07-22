@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
 
         User user = new User();
 
-        if ("AdminEUC".equals(username)){
+        if ("AdminSLT".equals(username)){
 
             user.setUsername(username);
 
@@ -48,16 +48,17 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        if (username.equals("AdminEUC")) {
+        if (username.equals("AdminSLT")) {
             Set<SimpleGrantedAuthority> authorities = new HashSet<>();
             authorities.add(new SimpleGrantedAuthority("gender-list-get"));
             authorities.add(new SimpleGrantedAuthority("designation-list-get"));
             authorities.add(new SimpleGrantedAuthority("employeestatus-list-get"));
             authorities.add(new SimpleGrantedAuthority("employee-select"));
+            authorities.add(new SimpleGrantedAuthority("operation-select"));
 
             return org.springframework.security.core.userdetails.User
-                    .withUsername("AdminEUC")
-                    .password(new BCryptPasswordEncoder().encode("Admin1234"))
+                    .withUsername("AdminSLT")
+                    .password(new BCryptPasswordEncoder().encode("Admin12345"))
                     .authorities(authorities)
                     .accountExpired(false)
                     .accountLocked(false)
