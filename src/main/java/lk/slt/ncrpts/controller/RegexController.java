@@ -1,5 +1,6 @@
 package lk.slt.ncrpts.controller;
 
+import lk.slt.ncrpts.entity.Customer;
 import lk.slt.ncrpts.entity.Employee;
 import lk.slt.ncrpts.entity.User;
 import lk.slt.ncrpts.util.RegexProvider;
@@ -26,6 +27,10 @@ public class RegexController {
         return RegexProvider.get(new User());
     }
 
+    @GetMapping(path ="/customers", produces = "application/json")
+    public HashMap<String, HashMap<String, String>> customer() {
+        return RegexProvider.get(new Customer());
+    }
 
 }
 

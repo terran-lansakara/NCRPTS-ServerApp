@@ -54,7 +54,7 @@ public class UserService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority("designation-list-get"));
             authorities.add(new SimpleGrantedAuthority("employeestatus-list-get"));
             authorities.add(new SimpleGrantedAuthority("employee-select"));
-            authorities.add(new SimpleGrantedAuthority("operation-select"));
+            authorities.add(new SimpleGrantedAuthority("operations-select"));
 
             return org.springframework.security.core.userdetails.User
                     .withUsername("AdminSLT")
