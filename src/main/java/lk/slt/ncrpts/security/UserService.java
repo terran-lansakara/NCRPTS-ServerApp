@@ -48,25 +48,32 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        if (username.equals("AdminSLT")) {
-            Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-            authorities.add(new SimpleGrantedAuthority("gender-list-get"));
-            authorities.add(new SimpleGrantedAuthority("designation-list-get"));
-            authorities.add(new SimpleGrantedAuthority("employeestatus-list-get"));
-            authorities.add(new SimpleGrantedAuthority("employee-select"));
-            authorities.add(new SimpleGrantedAuthority("operations-select"));
-
-            return org.springframework.security.core.userdetails.User
-                    .withUsername("AdminSLT")
-                    .password(new BCryptPasswordEncoder().encode("Admin12345"))
-                    .authorities(authorities)
-                    .accountExpired(false)
-                    .accountLocked(false)
-                    .credentialsExpired(false)
-                    .disabled(false)
-                    .build();
-        }
-        else {
+//        if (username.equals("AdminSLT")) {
+//            Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+//            authorities.add(new SimpleGrantedAuthority("gender-list-get"));
+//            authorities.add(new SimpleGrantedAuthority("designation-list-get"));
+//            authorities.add(new SimpleGrantedAuthority("employeestatus-list-get"));
+//            authorities.add(new SimpleGrantedAuthority("employee-select"));
+//            authorities.add(new SimpleGrantedAuthority("operation-select"));
+//            authorities.add(new SimpleGrantedAuthority("operation-insert"));
+//            authorities.add(new SimpleGrantedAuthority("operation-update"));
+//            authorities.add(new SimpleGrantedAuthority("operation-delete"));
+//            authorities.add(new SimpleGrantedAuthority("privilege-select"));
+//            authorities.add(new SimpleGrantedAuthority("privilege-insert"));
+//            authorities.add(new SimpleGrantedAuthority("privilege-update"));
+//            authorities.add(new SimpleGrantedAuthority("privilege-delete"));
+//
+//            return org.springframework.security.core.userdetails.User
+//                    .withUsername("AdminSLT")
+//                    .password(new BCryptPasswordEncoder().encode("Admin12345"))
+//                    .authorities(authorities)
+//                    .accountExpired(false)
+//                    .accountLocked(false)
+//                    .credentialsExpired(false)
+//                    .disabled(false)
+//                    .build();
+//        }
+//        else {
 
             User user = userdao.findByUsername(username);
             if (user == null) {
@@ -93,6 +100,6 @@ public class UserService implements UserDetailsService {
                     .credentialsExpired(false)
                     .disabled(false)
                     .build();
-        }
+//        }
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -39,26 +40,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/AdminSLT").hasRole("ADMIN")
-                .antMatchers("/user").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/", "/").permitAll()
+                    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .antMatchers("/login").permitAll()
+                    .anyRequest().authenticated()
                 .and()
-                .logout()
-                .permitAll()
+                    .logout().permitAll()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), wsJwtTokenUtil(), userService), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(new JwtAuthorizationFilter(authenticationManager(), wsJwtTokenUtil(), userService), JwtAuthenticationFilter.class)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                    .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), wsJwtTokenUtil(), userService), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterAfter(new JwtAuthorizationFilter(authenticationManager(), wsJwtTokenUtil(), userService), JwtAuthenticationFilter.class)
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder())
-        .and()
-                .inMemoryAuthentication()
-                .withUser("AdminSLT")
-                .password(passwordEncoder().encode("Admin12345"))
-                .roles("ACC");
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+//        .and()
+//                .inMemoryAuthentication()
+//                .withUser("AdminSLT")
+//                .password(passwordEncoder().encode("Admin12345"))
+//                .roles("ACC");
 
     }
 

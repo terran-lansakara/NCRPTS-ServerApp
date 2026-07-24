@@ -102,6 +102,9 @@ public class UserController {
 
             // Update Existing User Roles
             try {
+
+                String rawPassword = user.getPassword();
+
                 extUser.getUserroles().clear();
                 user.getUserroles().forEach(newUserRole -> {
                     newUserRole.setUser(extUser);
@@ -110,15 +113,30 @@ public class UserController {
                 });
 
                 // Update basic user properties
-                BeanUtils.copyProperties(user, extUser, "id","userroles");
+                BeanUtils.copyProperties(user, extUser, "id","userroles", "password", "salt");
+
+                // if a new password added
+                if (rawPassword != null && !rawPassword.trim().isEmpty()) {
+                    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+                    String salt = passwordEncoder.encode(extUser.getUsername());
+                    String hashedPassword = passwordEncoder.encode(salt + rawPassword);
+                    extUser.setSalt(salt);
+                    extUser.setPassword(hashedPassword);
+                }
 
                 userdao.save(extUser); // Save the updated extUser object
+
+
 
                 response.put("id", String.valueOf(user.getId()));
                 response.put("url", "/users/" + user.getId());
                 response.put("errors", errors);
+
             } catch (Exception e) {
                 e.printStackTrace();
+                errors = "Server validation errors: <br> Update Failed";
+                response.put("errors", errors);
             }
         }
 
